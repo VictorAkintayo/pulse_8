@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { customers, deals, cases } from "@/lib/db/schema";
 import { eq, sql, and, gte } from "drizzle-orm";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 /**
  * GET /api/crm/dashboard/metrics

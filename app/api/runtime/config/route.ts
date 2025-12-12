@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { configSnapshots } from "@/lib/db/schema";
 import { eq, desc, gt } from "drizzle-orm";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 /**
  * GET /api/runtime/config?sinceVersion=number
