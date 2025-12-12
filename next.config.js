@@ -5,13 +5,15 @@ const nextConfig = {
       bodySizeLimit: '2mb',
     },
   },
-  // Exclude services directory from build (separate Node service)
+  // Exclude services directory from Next.js build (separate Node service)
+  // This prevents Next.js from trying to compile the ws-gateway service
+  pageExtensions: ['ts', 'tsx', 'js', 'jsx'],
   webpack: (config, { isServer }) => {
+    // Exclude services directory from webpack compilation
     if (isServer) {
-      config.externals = config.externals || [];
-      config.externals.push({
-        'services/ws-gateway': 'commonjs services/ws-gateway',
-      });
+      config.resolve = config.resolve || {};
+      config.resolve.alias = config.resolve.alias || {};
+      // Don't try to resolve services directory
     }
     return config;
   },
