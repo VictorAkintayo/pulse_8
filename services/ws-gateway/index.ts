@@ -12,7 +12,7 @@
  * Or: npm run ws:dev (if added to package.json)
  */
 
-import WebSocket from "ws";
+import { WebSocketServer, WebSocket } from "ws";
 import { Redis } from "@upstash/redis";
 import { verifyToken, JWTPayload } from "../../lib/auth/jwt";
 
@@ -29,7 +29,7 @@ const redis = new Redis({
 const tenantConnections = new Map<string, Set<WebSocket>>();
 
 // WebSocket server
-const wss = new WebSocket.Server({ port: WS_PORT });
+const wss = new WebSocketServer({ port: WS_PORT });
 
 console.log(`WebSocket Gateway listening on port ${WS_PORT}`);
 
