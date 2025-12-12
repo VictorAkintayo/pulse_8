@@ -20,10 +20,20 @@ function getDb(): ReturnType<typeof drizzle<typeof schema>> {
   return _db;
 }
 
-// Create a properly typed proxy
+// Create a properly typed proxy that binds methods to the actual db instance
 const dbProxy = new Proxy({} as ReturnType<typeof drizzle<typeof schema>>, {
   get(_target, prop) {
-    return getDb()[prop as keyof ReturnType<typeof drizzle<typeof schema>>];
+    const dbInstance = getDb();
+    const value = dbInstance[prop as keyof typeof dbInstance];
+    
+    // If the value is a function, bind it to the db instance to preserve 'this' context
+    if (typeof value === 'function') {
+      return value.bind(dbInstance);
+    }
+    
+    // For non-function properties (like db.query), return them as-is
+    // If it's an object, we might need to proxy it too, but drizzle's query is already an object
+    return value;
   },
 });
 
